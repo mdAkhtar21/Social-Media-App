@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_error_message">Enter text here</string>
+    <string name="username_hint">Username</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="SignButton_hint">Sign Up</string>
+    <string name="LoginButton_hint">Login</string>
+    <string name="login_destination_title">Login</string>
+    <string name="signUp_destinatin_title">SignUp</string>
+    <string name="home_destination_title">Home Screen</string>
+    <string name="no_destination_title" />
+    <string name="follow_button_text">Follow</string>
+    <string name="onboarding_done_button">Done</string>
+    <string name="onboarding_description">Posts from people you follow will appear here. Follow some people to get started</string>
+    <string name="onboarding_title">Welcome to Social App</string>
+
+</resources>
