@@ -11,18 +11,18 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.socialmedialapp.android.common.components.PostListItem
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.FollowsUser
 import com.example.socialmedialapp.android.fake_data.Post
+import com.example.socialmedialapp.android.fake_data.SampleFollowsUser
+import com.example.socialmedialapp.android.fake_data.samplePosts
+import com.example.socialmedialapp.android.fake_data.sampleUsers
 import com.example.socialmedialapp.android.home.onboarding.OnBoardingSelection
 import com.example.socialmedialapp.android.home.onboarding.OnboardingUiState
 import com.ramcosta.composedestinations.annotation.Destination
-import androidx.compose.ui.Alignment
-import com.example.socialmedialapp.android.fake_data.samplePosts
-import com.example.socialmedialapp.android.fake_data.sampleUsers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +35,7 @@ fun HomeScreen(
     onProfileClick: (Int) -> Unit,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
-    onFollowButtonClick: (Boolean, FollowsUser) -> Unit,
+    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit,
     onboardingFinish: () -> Unit,
     fetchData: () -> Unit
 ) {
@@ -61,7 +61,7 @@ fun HomeScreen(
                 item {
                     OnBoardingSelection(
                         users = onboardingUiState.users,
-                        onUserClick = { user -> onProfileClick(user.id) },
+                        onUserClick = { user-> onProfileClick(user.id) },
                         onFollowButtonClick = onFollowButtonClick
                     ) {
                         onboardingFinish()

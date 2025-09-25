@@ -15,9 +15,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.socialmedialapp.android.R
 import com.example.socialmedialapp.android.common.theming.SmallElevation
+import com.example.socialmedialapp.android.destinations.EditProfileDestination
+import com.example.socialmedialapp.android.destinations.FollowersDestination
+import com.example.socialmedialapp.android.destinations.FollowingDestination
 import com.example.socialmedialapp.android.destinations.HomeScreenDestination
 import com.example.socialmedialapp.android.destinations.LoginDestination
+import com.example.socialmedialapp.android.destinations.PostDetailDestination
+import com.example.socialmedialapp.android.destinations.ProfileDestination
 import com.example.socialmedialapp.android.destinations.SignUpDestination
+import com.example.socialmedialapp.android.post.PostDetail
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,16 +45,16 @@ fun AppBar(
             actions = {
                 IconButton(onClick = { /* Handle action */ }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.show_eye_icon_filled),
+                        painter = painterResource(id = R.drawable.person_circle_icon),
                         contentDescription = null
                     )
                 }
             },
             navigationIcon = {
                 if (shouldShowNavigationIcon(currentDestination?.route)) {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {navHostController.navigateUp() }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.hide_eye_icon_filled),
+                            painter = painterResource(id = R.drawable.round_arrow_back),
                             contentDescription = null
                         )
                     }
@@ -64,11 +70,20 @@ private fun getAppBarTitle(currentDestination: String?): Int {
         LoginDestination.route -> R.string.login_destination_title
         SignUpDestination.route -> R.string.signUp_destinatin_title
         HomeScreenDestination.route -> R.string.home_destination_title
+        PostDetailDestination.route ->R.string.post_detail_destination_title
+        ProfileDestination.route->R.string.profile_destination_title
+        EditProfileDestination.route->R.string.edit_profile_destination_title
+        FollowingDestination.route->R.string.following_text
+        FollowersDestination.route->R.string.followers_text
         else -> R.string.no_destination_title
     }
 }
 
 private fun shouldShowNavigationIcon(currentDestination: String?): Boolean {
     // The navigation icon should appear on screens you can navigate back from
-    return false
+    return !(
+            currentDestination == LoginDestination.route ||
+                    currentDestination == SignUpDestination.route ||
+                    currentDestination == HomeScreenDestination.route
+            )
 }

@@ -26,16 +26,16 @@ import com.example.socialmedialapp.android.common.components.FollowsButton
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.FollowsUser
+import com.example.socialmedialapp.android.fake_data.SampleFollowsUser
 import com.example.socialmedialapp.android.fake_data.sampleUsers
 
 @Composable
 fun OnBoardingUserItem(
     modifier: Modifier = Modifier,
-    followsUser: FollowsUser,
-    onUserClick: (FollowsUser) -> Unit,
+    followsUser: SampleFollowsUser,
+    onUserClick: (SampleFollowsUser) -> Unit,
     isFollowing: Boolean = false,
-    onFollowButtonClick: (Boolean, FollowsUser) -> Unit
+    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit
 ) {
     Card(
         modifier = modifier

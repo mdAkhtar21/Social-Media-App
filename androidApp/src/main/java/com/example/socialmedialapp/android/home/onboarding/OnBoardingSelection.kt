@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,15 +24,15 @@ import com.example.socialmedialapp.android.R
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.FollowsUser
+import com.example.socialmedialapp.android.fake_data.SampleFollowsUser
 import com.example.socialmedialapp.android.fake_data.sampleUsers
 
 @Composable
 fun OnBoardingSelection(
     modifier: Modifier = Modifier,
-    users: List<FollowsUser>,
-    onUserClick: (FollowsUser) -> Unit,
-    onFollowButtonClick: (Boolean, FollowsUser) -> Unit,
+    users: List<SampleFollowsUser>,
+    onUserClick: (SampleFollowsUser) -> Unit,
+    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit,
     onboardingFinished: () -> Unit
 ) {
     Column(
@@ -82,9 +81,9 @@ fun OnBoardingSelection(
 @Composable
 fun UsersRow(
     modifier: Modifier = Modifier,
-    users: List<FollowsUser>, // ✅ renamed correctly
-    onUserClick: (FollowsUser) -> Unit,
-    onFollowButtonClick: (Boolean, FollowsUser) -> Unit
+    users: List<SampleFollowsUser>, // ✅ renamed correctly
+    onUserClick: (SampleFollowsUser) -> Unit,
+    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(LargeSpacing),
