@@ -31,7 +31,7 @@ import com.example.socialmedialapp.android.common.theming.LightGray
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.Post
+import com.example.socialmedialapp.android.common.fake_data.Post
 
 @Composable
 fun PostListItem(

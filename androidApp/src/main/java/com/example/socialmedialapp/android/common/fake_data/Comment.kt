@@ -1,4 +1,4 @@
-package com.example.socialmedialapp.android.fake_data
+package com.example.socialmedialapp.android.common.fake_data
 
 
 data class Comment(
@@ -24,9 +24,9 @@ val sampleComments = listOf(
         id = "comment2",
         date = "2023-06-24",
         comment = "Nice work! Keep sharing more content like this.",
-        authorName =sampleUsers[1].name,
+        authorName = sampleUsers[1].name,
         authorImageUrl = sampleUsers[1].profileUrl,
-        authorId =sampleUsers[1].id,
+        authorId = sampleUsers[1].id,
         postId = samplePosts[0].id.hashCode().toLong()
     ),
     Comment(

@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socialmedialapp.android.common.datastore.UserSettings
-import com.example.socialmedialapp.android.common.datastore.toUserSettings
+import com.example.socialmedialapp.common.data.local.UserSettings
+import com.example.socialmedialapp.common.data.local.toUserSettings
 import com.example.socialmedialapp.auth.domain.usecase.SignUpUseCase
 import com.example.socialmedialapp.common.util.Result
 import kotlinx.coroutines.launch
@@ -35,9 +35,6 @@ class SignUpViewModel(
                     )
                 }
                 is Result.Success->{
-                    dataStore.updateData {
-                        authResultData.data!!.toUserSettings()
-                    }
                     uiState.copy(
                         isAuthenticating = false,
                         authenticationSucceed = true

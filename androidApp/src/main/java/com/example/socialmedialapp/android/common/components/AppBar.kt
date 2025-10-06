@@ -18,6 +18,7 @@ import com.example.socialmedialapp.android.common.theming.SmallElevation
 import com.example.socialmedialapp.android.destinations.EditProfileDestination
 import com.example.socialmedialapp.android.destinations.FollowersDestination
 import com.example.socialmedialapp.android.destinations.FollowingDestination
+import com.example.socialmedialapp.android.destinations.HomeDestination
 import com.example.socialmedialapp.android.destinations.HomeScreenDestination
 import com.example.socialmedialapp.android.destinations.LoginDestination
 import com.example.socialmedialapp.android.destinations.PostDetailDestination
@@ -69,7 +70,7 @@ private fun getAppBarTitle(currentDestination: String?): Int {
     return when (currentDestination) {
         LoginDestination.route -> R.string.login_destination_title
         SignUpDestination.route -> R.string.signUp_destinatin_title
-        HomeScreenDestination.route -> R.string.home_destination_title
+        HomeDestination.route -> R.string.home_destination_title
         PostDetailDestination.route ->R.string.post_detail_destination_title
         ProfileDestination.route->R.string.profile_destination_title
         EditProfileDestination.route->R.string.edit_profile_destination_title

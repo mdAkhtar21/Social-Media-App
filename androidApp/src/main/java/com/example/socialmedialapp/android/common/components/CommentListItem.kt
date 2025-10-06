@@ -24,8 +24,8 @@ import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.LightGray
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.Comment
-import com.example.socialmedialapp.android.fake_data.sampleComments
+import com.example.socialmedialapp.android.common.fake_data.Comment
+import com.example.socialmedialapp.android.common.fake_data.sampleComments
 
 @Composable
 fun CommentListItem(

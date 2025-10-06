@@ -26,8 +26,8 @@ import com.example.socialmedialapp.android.common.components.FollowsButton
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.SampleFollowsUser
-import com.example.socialmedialapp.android.fake_data.sampleUsers
+import com.example.socialmedialapp.android.common.fake_data.SampleFollowsUser
+import com.example.socialmedialapp.android.common.fake_data.sampleUsers
 
 @Composable
 fun OnBoardingUserItem(

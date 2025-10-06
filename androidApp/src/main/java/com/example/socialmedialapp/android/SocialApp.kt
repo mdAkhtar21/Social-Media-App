@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.socialmedialapp.android.common.components.AppBar
@@ -19,7 +20,7 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SocialApp(
-    token:String?
+   uiState: MainActivityUiState
 ) {
     val navHostController = rememberNavController()
     val systemUiController = rememberSystemUiController()
@@ -48,13 +49,20 @@ fun SocialApp(
             navController = navHostController
         )
     }
-    LaunchedEffect(key1 = token, block = {
-        if(token!=null && token.isBlank()){
-            navHostController.navigate(LoginDestination.route){
-                popUpTo(HomeScreenDestination.route){
-                    inclusive=true
+
+    when(uiState){
+        MainActivityUiState.Loading->{}
+        is MainActivityUiState.Success->{
+            LaunchedEffect(key1=Unit) {
+                if(uiState.currentUser.token.isEmpty()){
+                    navHostController.navigate(LoginDestination.route){
+                        popUpTo(HomeScreenDestination.route){
+                            inclusive=true
+                        }
+                    }
                 }
             }
         }
-    })
+
+    }
 }

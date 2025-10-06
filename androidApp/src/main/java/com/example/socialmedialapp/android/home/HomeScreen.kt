@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.socialmedialapp.android.common.components.PostListItem
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.Post
-import com.example.socialmedialapp.android.fake_data.SampleFollowsUser
-import com.example.socialmedialapp.android.fake_data.samplePosts
-import com.example.socialmedialapp.android.fake_data.sampleUsers
+import com.example.socialmedialapp.android.common.fake_data.Post
+import com.example.socialmedialapp.android.common.fake_data.SampleFollowsUser
+import com.example.socialmedialapp.android.common.fake_data.samplePosts
+import com.example.socialmedialapp.android.common.fake_data.sampleUsers
 import com.example.socialmedialapp.android.home.onboarding.OnBoardingSelection
 import com.example.socialmedialapp.android.home.onboarding.OnboardingUiState
 import com.ramcosta.composedestinations.annotation.Destination

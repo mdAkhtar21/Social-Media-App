@@ -7,8 +7,8 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socialmedialapp.android.fake_data.Profile
-import com.example.socialmedialapp.android.fake_data.sampleProfiles
+import com.example.socialmedialapp.android.common.fake_data.Profile
+import com.example.socialmedialapp.android.common.fake_data.sampleProfiles
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -69,7 +69,7 @@ class EditProfileViewModel: ViewModel(){
 
 data class EditProfileUiState(
     val isLoading:Boolean=false,
-    val profile:Profile?=null,
+    val profile: Profile?=null,
     val uploadSucceed:Boolean=false,
     val errorMessage:String?=null
 )

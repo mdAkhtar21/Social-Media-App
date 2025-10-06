@@ -1,8 +1,8 @@
-package com.example.socialmedialapp.android.common.datastore
+package com.example.socialmedialapp.common.data
 
 import androidx.datastore.core.Serializer
+import com.example.socialmedialapp.common.data.local.UserSettings
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream

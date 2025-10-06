@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socialmedialapp.android.fake_data.Comment
-import com.example.socialmedialapp.android.fake_data.Post
-import com.example.socialmedialapp.android.fake_data.sampleComments
-import com.example.socialmedialapp.android.fake_data.samplePosts
+import com.example.socialmedialapp.android.common.fake_data.Comment
+import com.example.socialmedialapp.android.common.fake_data.Post
+import com.example.socialmedialapp.android.common.fake_data.sampleComments
+import com.example.socialmedialapp.android.common.fake_data.samplePosts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

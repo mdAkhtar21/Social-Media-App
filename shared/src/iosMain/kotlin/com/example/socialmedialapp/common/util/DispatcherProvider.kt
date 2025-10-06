@@ -1,5 +1,6 @@
 package com.example.socialmedialapp.common.util
 
+import com.example.socialmedialapp.common.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

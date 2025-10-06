@@ -28,9 +28,9 @@ import com.example.socialmedialapp.android.common.components.CommentListItem
 import com.example.socialmedialapp.android.common.components.PostListItem
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.fake_data.Comment
-import com.example.socialmedialapp.android.fake_data.sampleComments
-import com.example.socialmedialapp.android.fake_data.samplePosts
+import com.example.socialmedialapp.android.common.fake_data.Comment
+import com.example.socialmedialapp.android.common.fake_data.sampleComments
+import com.example.socialmedialapp.android.common.fake_data.samplePosts
 
 @Composable
 fun PostDetailScreen(
@@ -71,7 +71,7 @@ fun PostDetailScreen(
                     onAddCommentClick()
                 }
             }
-            items(items= sampleComments,key={comment->comment.id}){
+            items(items= sampleComments,key={ comment->comment.id}){
                 Divider()
                 CommentListItem(comment=it, onProfileClick = onProfileClick) {
                     onCommentsMoreIconClick(it)

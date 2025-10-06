@@ -1,4 +1,4 @@
-package com.example.socialmedialapp.android.fake_data
+package com.example.socialmedialapp.android.common.fake_data
 
 data class Profile(
     val id: Int,
