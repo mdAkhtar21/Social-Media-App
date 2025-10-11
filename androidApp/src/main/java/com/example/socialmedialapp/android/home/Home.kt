@@ -19,17 +19,11 @@ fun Home (
     HomeScreen(
         modifier = Modifier,
         onboardingUiState = viewModel.onboardingUiState,
-        postUiState = viewModel.postUiState,
-        onPostClick = {
-            navigator.navigate(PostDetailDestination(it.id))
-        },
-        onProfileClick ={navigator.navigate(ProfileDestination(it))},
-        onLikeClick = {},
-        onCommentClick = {},
-        onFollowButtonClick = {_,_->},
-        onboardingFinish = { TODO() },
-        fetchData = {
-            viewModel.fetchData()
-        }
+        postsFeedUiState = viewModel.postsFeedUiState,
+        homeRefreshState = viewModel.homeRefreshState,
+        onUiAction = {viewModel.onUiAction(it)},
+        onProfileNavigation = {navigator.navigate(ProfileDestination(it.toInt()))},
+        onPostDetailNavigation = {navigator.navigate(PostDetailDestination(it.postId))}
+
     )
 }

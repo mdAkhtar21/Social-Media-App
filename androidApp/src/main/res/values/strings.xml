@@ -36,5 +36,6 @@
     <string name="create_post_destination_title">New post</string>
     <string name="create_post_button_label">Create post</string>
     <string name="select_post_image_label">Post image:</string>
+    <string name="unfollow_text_label">UnFollow</string>
 
 </resources>

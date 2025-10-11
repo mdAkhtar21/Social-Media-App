@@ -1,6 +1,5 @@
 package com.example.socialmedialapp.android.post
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.socialmedialapp.android.R
 import com.example.socialmedialapp.android.common.components.CommentListItem
 import com.example.socialmedialapp.android.common.components.PostListItem
+import com.example.socialmedialapp.android.common.dummy_data.Comment
+import com.example.socialmedialapp.android.common.dummy_data.sampleComments
+import com.example.socialmedialapp.android.common.dummy_data.samplePosts
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.common.fake_data.Comment
-import com.example.socialmedialapp.android.common.fake_data.sampleComments
-import com.example.socialmedialapp.android.common.fake_data.samplePosts
 
 @Composable
 fun PostDetailScreen(
@@ -57,9 +56,9 @@ fun PostDetailScreen(
         ) {
             item(key = "post_item") {
                 PostListItem(
-                    post = postUiState.post,
+                    post = postUiState.post.toDomainPost(),
                     onPostClick = {},
-                    onProfileClick = onProfileClick,
+                    onProfileClick = {  },
                     onLikeClick = {},
                     onCommentClick ={},
                     isDetailScreen = true

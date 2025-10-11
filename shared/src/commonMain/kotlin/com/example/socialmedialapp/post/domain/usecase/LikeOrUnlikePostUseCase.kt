@@ -2,7 +2,7 @@ package com.example.socialmedialapp.post.domain.usecase
 
 import com.example.socialmedialapp.common.domain.model.Post
 import com.example.socialmedialapp.common.util.Result
-import com.example.socialmedialapp.post.domain.PostRepository
+import com.example.socialmedialapp.post.domain.repository.PostRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

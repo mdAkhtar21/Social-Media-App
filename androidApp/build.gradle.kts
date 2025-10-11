@@ -56,7 +56,7 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
     implementation(composeBom)
-//    implementation("androidx.compose.material3:material3-pullrefresh:1.3.0-alpha01")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
 
     implementation("io.github.raamcosta.compose-destinations:core:1.10.0")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.10.0")

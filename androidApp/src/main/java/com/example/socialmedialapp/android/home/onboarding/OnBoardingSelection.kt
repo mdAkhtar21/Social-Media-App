@@ -21,18 +21,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.socialmedialapp.android.R
+import com.example.socialmedialapp.android.common.dummy_data.sampleUsers
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.common.fake_data.SampleFollowsUser
-import com.example.socialmedialapp.android.common.fake_data.sampleUsers
+import com.example.socialmedialapp.common.domain.model.FollowsUser
 
 @Composable
 fun OnBoardingSelection(
     modifier: Modifier = Modifier,
-    users: List<SampleFollowsUser>,
-    onUserClick: (SampleFollowsUser) -> Unit,
-    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit,
+    users: List<FollowsUser>,
+    onUserClick: (FollowsUser) -> Unit,
+    onFollowButtonClick: (Boolean, FollowsUser) -> Unit,
     onboardingFinished: () -> Unit
 ) {
     Column(
@@ -81,9 +81,9 @@ fun OnBoardingSelection(
 @Composable
 fun UsersRow(
     modifier: Modifier = Modifier,
-    users: List<SampleFollowsUser>, // ✅ renamed correctly
-    onUserClick: (SampleFollowsUser) -> Unit,
-    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit
+    users: List<FollowsUser>,
+    onUserClick: (FollowsUser) -> Unit,
+    onFollowButtonClick: (Boolean, FollowsUser) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(LargeSpacing),
@@ -109,7 +109,7 @@ fun UsersRow(
 private fun onBoardingSelectionPreview() {
     SocialAppTheme {
         OnBoardingSelection(
-            users = sampleUsers,
+            users = sampleUsers.map { it.toFollowsUser() },
             onUserClick = {},
             onFollowButtonClick = {_,_->},
             onboardingFinished = {}

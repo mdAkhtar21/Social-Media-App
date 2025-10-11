@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,23 +27,24 @@ import com.example.socialmedialapp.android.common.components.FollowsButton
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.common.fake_data.SampleFollowsUser
-import com.example.socialmedialapp.android.common.fake_data.sampleUsers
+import com.example.socialmedialapp.android.common.dummy_data.sampleUsers
+import com.example.socialmedialapp.android.common.util.toCurrentUrl
+import com.example.socialmedialapp.common.domain.model.FollowsUser
 
 @Composable
 fun OnBoardingUserItem(
     modifier: Modifier = Modifier,
-    followsUser: SampleFollowsUser,
-    onUserClick: (SampleFollowsUser) -> Unit,
+    followsUser: FollowsUser,
+    onUserClick: (FollowsUser) -> Unit,
     isFollowing: Boolean = false,
-    onFollowButtonClick: (Boolean, SampleFollowsUser) -> Unit
+    onFollowButtonClick: (Boolean, FollowsUser) -> Unit
 ) {
     Card(
         modifier = modifier
             .height(140.dp)
             .width(130.dp)
             .clickable { onUserClick(followsUser) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // ✅ fixed
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
             modifier = Modifier
@@ -53,7 +55,7 @@ fun OnBoardingUserItem(
         ) {
             CircleImage(
                 modifier = Modifier.size(50.dp),
-                imageUrl = followsUser.profileUrl,
+                imageUrl = followsUser.imageUrl?.toCurrentUrl(),
             ) {
                 onUserClick(followsUser)
             }
@@ -70,8 +72,13 @@ fun OnBoardingUserItem(
             Spacer(modifier = Modifier.height(MediumSpacing))
 
             FollowsButton(
-                modifier=modifier.fillMaxWidth().height(30.dp),
-                text = R.string.follow_button_text,
+                modifier=modifier.fillMaxWidth().height(30.dp).widthIn(100.dp),
+                text = if(!followsUser.isFollowing){
+                    R.string.follow_button_text
+                }else{
+                    R.string.unfollow_text_label
+                },
+                isOutline = followsUser.isFollowing,
                 onClick = { onFollowButtonClick(!isFollowing, followsUser) }
             )
         }
@@ -83,7 +90,7 @@ fun OnBoardingUserItem(
 private fun OnBoardingUserPreview() {
     SocialAppTheme {
         OnBoardingUserItem(
-            followsUser = sampleUsers.first(),
+            followsUser = sampleUsers.first().toFollowsUser(),
             onUserClick = {},
             onFollowButtonClick = {_,_->}
         )

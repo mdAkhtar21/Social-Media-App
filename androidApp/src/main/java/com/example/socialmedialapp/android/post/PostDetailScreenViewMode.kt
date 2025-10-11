@@ -5,10 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socialmedialapp.android.common.fake_data.Comment
-import com.example.socialmedialapp.android.common.fake_data.Post
-import com.example.socialmedialapp.android.common.fake_data.sampleComments
-import com.example.socialmedialapp.android.common.fake_data.samplePosts
+import com.example.socialmedialapp.android.common.dummy_data.Comment
+import com.example.socialmedialapp.android.common.dummy_data.SamplePost
+import com.example.socialmedialapp.android.common.dummy_data.sampleComments
+import com.example.socialmedialapp.android.common.dummy_data.samplePosts
+import com.example.socialmedialapp.common.domain.model.Post
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -20,8 +21,9 @@ class PostDetailScreenViewModel : ViewModel() {
     var commentsUiState by mutableStateOf(CommentsUiState())
         private set
 
-    fun fetchData(postId: String) {
+    fun fetchData(postId: Long) {
         viewModelScope.launch {
+            delay(500)
             postUiState = postUiState.copy(
                 isLoading = true
             )
@@ -34,7 +36,7 @@ class PostDetailScreenViewModel : ViewModel() {
 
             postUiState = postUiState.copy(
                 isLoading = false,
-                post = samplePosts.find { it.id == postId }
+                post = samplePosts.find { it.id == postId.toString() }
             )
 
             commentsUiState = commentsUiState.copy(
@@ -46,8 +48,8 @@ class PostDetailScreenViewModel : ViewModel() {
 }
 
 data class PostUiState(
-    val isLoading: Boolean = false,
-    val post: Post? = null,
+    val isLoading: Boolean = true,
+    val post: SamplePost? = null,
     val errorMessage: String? = null
 )
 
