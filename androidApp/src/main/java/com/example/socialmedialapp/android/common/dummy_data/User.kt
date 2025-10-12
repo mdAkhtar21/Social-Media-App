@@ -9,13 +9,13 @@ data class SampleFollowsUser(
     val profileUrl: String,
     val isFollowing: Boolean = false
 ){
-    fun toFollowsUser(): FollowsUser {
+    fun toFollowsUser(): FollowsUser{
         return FollowsUser(
-            id=id.toLong(),
-            name=name,
-            bio=bio,
+            id = id.toLong(),
+            name = name,
+            bio = bio,
             imageUrl = profileUrl,
-            isFollowing=isFollowing
+            isFollowing = isFollowing
         )
     }
 }

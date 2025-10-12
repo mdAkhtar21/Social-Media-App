@@ -40,137 +40,169 @@ import com.example.socialmedialapp.android.common.theming.ExtraLargeSpacing
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.LightGray
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
-import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 import com.example.socialmedialapp.android.common.util.toCurrentUrl
 import com.example.socialmedialapp.common.domain.model.Post
+
 @Composable
 fun PostListItem(
     modifier: Modifier = Modifier,
     post: Post,
-    onPostClick: (Post) -> Unit,
-    onProfileClick: (userId:Long) -> Unit,
+    onPostClick: ((Post) -> Unit)? = null,
+    onProfileClick: (userId: Long) -> Unit,
     onLikeClick: (Post) -> Unit,
     onCommentClick: (Post) -> Unit,
-    isDetailScreen: Boolean = false
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
+            //.aspectRatio(ratio = 0.7f)
             .background(color = MaterialTheme.colorScheme.surface)
-            .clickable { onPostClick(post) }
-            .padding(bottom = ExtraLargeSpacing)
+            //.clickable { onPostClick(post) }
+            .let { mod ->
+                if (onPostClick != null) {
+                    mod.clickable { onPostClick(post) }.padding(bottom = ExtraLargeSpacing)
+                } else {
+                    mod
+                }
+            }
     ) {
-        PostItemHeader(
+        PostHeader(
             name = post.userName,
-            profileUrl = post.imageUrl,
+            profileUrl = post.userImageUrl,
             date = post.createdAt,
-            onProfileClick = { onProfileClick(post.userId) }
+            onProfileClick = {
+                onProfileClick(
+                    post.userId
+                )
+            }
         )
 
         AsyncImage(
-            model = post.imageUrl.toCurrentUrl(), // ✅ fixed
+            model = post.imageUrl.toCurrentUrl(),
             contentDescription = null,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .aspectRatio(ratio = 1.0f),
             contentScale = ContentScale.Crop,
             placeholder = if (isSystemInDarkTheme()) {
-                painterResource(id = R.drawable.dark_image_place_holder)
-            } else {
                 painterResource(id = R.drawable.light_image_place_holder)
+            } else {
+                painterResource(id = R.drawable.dark_image_place_holder)
             }
         )
 
         PostLikesRow(
             likesCount = post.likesCount,
-            commentsCount = post.commentsCount,
-            onLikeClickClick = {onLikeClick(post)},
+            commentCount = post.commentsCount,
+            onLikeClick = { onLikeClick(post) },
             isPostLiked = post.isLiked,
-            onCommentClick = {onCommentClick(post)}
+            onCommentClick = { onCommentClick(post) }
         )
 
         Text(
             text = post.caption,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(horizontal = LargeSpacing),
-            maxLines = if (isDetailScreen) 20 else 2,
+            modifier = modifier.padding(horizontal = LargeSpacing),
+            maxLines = maxLines,
             overflow = TextOverflow.Ellipsis
         )
     }
 }
 
+
 @Composable
-fun PostItemHeader(
+fun PostHeader(
     modifier: Modifier = Modifier,
     name: String,
-    profileUrl: String,
+    profileUrl: String?,
     date: String,
     onProfileClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = LargeSpacing, vertical = MediumSpacing),
+            .padding(
+                horizontal = LargeSpacing,
+                vertical = MediumSpacing
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MediumSpacing)
     ) {
         CircleImage(
-            imageUrl = profileUrl?.toCurrentUrl(),
-            modifier = Modifier.size(30.dp)
-        ) {
-            onProfileClick()
-        }
+            modifier = modifier.size(30.dp),
+            url = profileUrl?.toCurrentUrl(),
+            onClick = onProfileClick
+        )
 
         Text(
             text = name,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(4.dp)
                 .clip(CircleShape)
                 .background(
-                    color = if (isSystemInDarkTheme()) DarkGray else LightGray
+                    color = if (isSystemInDarkTheme()) {
+                        LightGray
+                    } else {
+                        DarkGray
+                    }
                 )
         )
 
         Text(
             text = date,
-            style = MaterialTheme.typography.labelSmall.copy(
+            style = MaterialTheme.typography.labelMedium.copy(
                 textAlign = TextAlign.Start,
                 fontSize = 12.sp,
-                color = if (isSystemInDarkTheme()) LightGray else DarkGray
+                color = if (isSystemInDarkTheme()) {
+                    LightGray
+                } else {
+                    DarkGray
+                }
             ),
-            modifier = Modifier.weight(1f)
+            modifier = modifier.weight(1f)
         )
 
         Icon(
             painter = painterResource(id = R.drawable.round_more_horizontal),
             contentDescription = null,
-            tint = if (isSystemInDarkTheme()) LightGray else DarkGray
+            tint = if (isSystemInDarkTheme()) {
+                LightGray
+            } else {
+                DarkGray
+            }
         )
     }
 }
+
 
 @Composable
 fun PostLikesRow(
     modifier: Modifier = Modifier,
     likesCount: Int,
-    commentsCount: Int,
-    onLikeClickClick: () -> Unit,
+    commentCount: Int,
+    onLikeClick: () -> Unit,
     isPostLiked: Boolean,
     onCommentClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 0.dp, horizontal = MediumSpacing),
+            .padding(
+                vertical = 0.dp,
+                horizontal = MediumSpacing
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onLikeClickClick) {
+        IconButton(
+            onClick = onLikeClick
+        ) {
             Icon(
                 painter = if (isPostLiked) {
                     painterResource(id = R.drawable.like_icon_filled)
@@ -183,27 +215,29 @@ fun PostLikesRow(
         }
 
         Text(
-            text = "$likesCount", // ✅ fixed to show likes
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 18.sp
-            )
+            text = "$likesCount",
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
         )
 
-        Spacer(modifier = Modifier.width(SmallSpacing))
+        Spacer(modifier = modifier.width(MediumSpacing))
 
-        IconButton(onClick = onCommentClick) {
+        IconButton(
+            onClick = onCommentClick
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.chat_icon_outlined),
                 contentDescription = null,
-                tint = if (isSystemInDarkTheme()) LightGray else DarkGray
+                tint = if (isSystemInDarkTheme()) {
+                    LightGray
+                } else {
+                    DarkGray
+                }
             )
         }
 
         Text(
-            text = "$commentsCount",
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 18.sp
-            )
+            text = "$commentCount",
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
         )
     }
 }
@@ -230,7 +264,7 @@ private fun PostListItemPreview() {
 private fun PostHeaderPreview() {
     SocialAppTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
-            PostItemHeader(
+            PostHeader(
                 name = "Mr Dip",
                 profileUrl = "",
                 date = "20 min",
@@ -248,8 +282,8 @@ private fun PostLikesRowPreview() {
         Surface(color = MaterialTheme.colorScheme.surface) {
             PostLikesRow(
                 likesCount = 12,
-                commentsCount = 2,
-                onLikeClickClick = {},
+                commentCount = 2,
+                onLikeClick = {},
                 isPostLiked = true,
                 onCommentClick = {}
             )

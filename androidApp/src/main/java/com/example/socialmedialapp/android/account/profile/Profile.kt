@@ -16,7 +16,8 @@ import org.koin.dsl.koinApplication
 fun Profile(
     userId: Long,
     navigator: DestinationsNavigator
-){
+) {
+
     val viewModel: ProfileViewModel = koinViewModel()
 
     ProfileScreen(

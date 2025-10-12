@@ -5,11 +5,11 @@ import com.example.socialmedialapp.common.data.local.UserSettings
 
 fun UserSettings.toDomainProfile(): Profile {
     return Profile(
-        id = id.toLong(),
+        id = id,
         name = name,
         bio = bio,
         imageUrl = avatar,
-        followersCount = followerCount,
+        followersCount = followersCount,
         followingCount = followingCount,
         isFollowing = false,
         isOwnProfile = true
@@ -18,11 +18,11 @@ fun UserSettings.toDomainProfile(): Profile {
 
 fun Profile.toUserSettings(token: String): UserSettings{
     return UserSettings(
-        id = id.toInt(),
+        id = id,
         name = name,
         bio = bio,
         avatar = imageUrl,
-        followerCount = followersCount,
+        followersCount = followersCount,
         followingCount = followingCount,
         token = token
     )

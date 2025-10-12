@@ -6,15 +6,17 @@ import androidx.datastore.preferences.core.Preferences
 import com.example.socialmedialapp.common.data.local.PREFERENCES_FILE_NAME
 import com.example.socialmedialapp.common.data.local.UserPreferences
 import com.example.socialmedialapp.common.data.local.UserSettings
+import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
+
 internal class IOSUserPreferences(
     private val dataStore: DataStore<Preferences>
-) : UserPreferences {
+): UserPreferences{
     override suspend fun getUserData(): UserSettings {
         TODO("Not yet implemented")
     }
@@ -24,6 +26,8 @@ internal class IOSUserPreferences(
     }
 }
 
+
+@OptIn(ExperimentalForeignApi::class)
 internal fun createDatastore(): DataStore<Preferences>{
     return PreferenceDataStoreFactory.createWithPath(
         corruptionHandler = null,

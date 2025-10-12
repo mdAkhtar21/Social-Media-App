@@ -37,6 +37,7 @@ import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SmallSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 import com.example.socialmedialapp.android.common.util.Constants
+import com.example.socialmedialapp.android.common.util.toCurrentUrl
 import com.example.socialmedialapp.common.domain.model.Post
 
 @Composable
@@ -51,6 +52,7 @@ fun ProfileScreen(
     onFollowingScreenNavigation: () -> Unit,
     onPostDetailNavigation: (Post) -> Unit
 ) {
+
     val listState = rememberLazyListState()
 
     val shouldFetchMorePosts by remember {
@@ -132,12 +134,13 @@ fun ProfileScreen(
             onUiAction(ProfileUiAction.LoadMorePostsAction)
         }
     }
+
 }
 
 @Composable
 fun ProfileHeaderSection(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    imageUrl: String?,
     name: String,
     bio: String,
     followersCount: Int,
@@ -155,9 +158,11 @@ fun ProfileHeaderSection(
             .background(color = MaterialTheme.colorScheme.surface)
             .padding(all = LargeSpacing)
     ) {
+
+
         CircleImage(
             modifier = modifier.size(90.dp),
-            imageUrl = imageUrl,
+            url = imageUrl?.toCurrentUrl(),
             onClick = {}
         )
 
@@ -165,10 +170,11 @@ fun ProfileHeaderSection(
 
         Text(
             text = name,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+
         Text(text = bio, style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = modifier.height(MediumSpacing))
@@ -178,9 +184,9 @@ fun ProfileHeaderSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
-                modifier = modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = modifier.weight(1f)
             ) {
+
                 FollowsText(
                     count = followersCount,
                     text = R.string.followers_text,
@@ -195,25 +201,32 @@ fun ProfileHeaderSection(
                     onClick = onFollowingClick
                 )
             }
+
             FollowsButton(
-                text = R.string.follow_button_text,
+                text = when {
+                    isCurrentUser -> R.string.edit_profile_label
+                    isFollowing -> R.string.unfollow_text_label
+                    else -> R.string.follow_text_label
+                },
                 onClick = onButtonClick,
                 modifier = modifier
                     .heightIn(30.dp)
                     .widthIn(100.dp),
-                isOutline = isCurrentUser || isFollowing
+                isOutlined = isCurrentUser || isFollowing
             )
         }
     }
 }
 
+
 @Composable
-fun FollowsText(
+private fun FollowsText(
     modifier: Modifier = Modifier,
     count: Int,
     @StringRes text: Int,
     onClick: () -> Unit
 ) {
+
     Text(
         text = buildAnnotatedString {
             withStyle(
@@ -223,21 +236,24 @@ fun FollowsText(
                     fontSize = 14.sp
                 )
             ) {
-                append("$count ")
+                append(text = "$count ")
             }
+
             withStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.54f),
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp
                 )
             ) {
-                append(stringResource(id = text))
+                append(text = stringResource(id = text))
             }
         },
         modifier = modifier.clickable { onClick() }
     )
+
 }
+
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
@@ -246,14 +262,13 @@ private fun ProfileHeaderPreview() {
         Surface(color = MaterialTheme.colorScheme.surface) {
             ProfileHeaderSection(
                 imageUrl = "",
-                name = "Md Akhtar",
-                bio = "Hey there, welcome to Md Akhtar Profile",
+                name = "Mr Dip",
+                bio = "Hey there, welcome to Mr Dip Coding page",
                 followersCount = 9,
                 followingCount = 2,
-                onButtonClick = {},
-                onFollowersClick = {},
-                onFollowingClick = {}
-            )
+                onButtonClick = { /*TODO*/ },
+                onFollowersClick = { /*TODO*/ }) {
+            }
         }
     }
 }

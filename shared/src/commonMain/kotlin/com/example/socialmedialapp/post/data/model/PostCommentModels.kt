@@ -6,7 +6,6 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 
 
-
 @Serializable
 internal data class RemotePostComment(
     val commentId: Long,

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LikeParams(
     val postId: Long,
-    val userId: Int
+    val userId: Long
 )
 
 @Serializable

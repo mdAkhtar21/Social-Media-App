@@ -3,7 +3,7 @@ package com.example.socialmedialapp.common.util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-internal class AndroidDispatcher: DispatcherProvider {
+internal class AndroidDispatcher: DispatcherProvider{
     override val main: CoroutineDispatcher
         get() = Dispatchers.Main
 

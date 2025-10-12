@@ -10,13 +10,13 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 fun EditProfile(
     navigator: DestinationsNavigator,
-    userId:Long
-){
+    userId: Long
+) {
     val viewModel: EditProfileViewModel = koinViewModel()
-    
+
     EditProfileScreen(
         editProfileUiState = viewModel.uiState,
-        onNameChange = viewModel::onNameChage,
+        onNameChange = viewModel::onNameChange,
         bioTextFieldValue = viewModel.bioTextFieldValue,
         onBioChange = viewModel::onBioChange,
         onUploadSucceed = { navigator.navigateUp() },

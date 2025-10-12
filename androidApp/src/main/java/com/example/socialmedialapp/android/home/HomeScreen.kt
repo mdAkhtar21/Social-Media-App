@@ -29,7 +29,7 @@ import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 import com.example.socialmedialapp.android.common.util.Constants
-import com.example.socialmedialapp.android.home.onboarding.OnBoardingSelection
+import com.example.socialmedialapp.android.home.onboarding.OnBoardingSection
 import com.ramcosta.composedestinations.annotation.Destination
 
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -42,13 +42,13 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Destination
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onboardingUiState: OnBoardingUiState,
-    postsFeedUiState:PostsFeedUiState,
+    onBoardingUiState: OnBoardingUiState,
+    postsFeedUiState: PostsFeedUiState,
     homeRefreshState: HomeRefreshState,
-    onUiAction: (HomeUiAction)->Unit,
-    onProfileNavigation:(userId:Long)->Unit,
-    onPostDetailNavigation:(Post)->Unit
-) {
+    onUiAction: (HomeUiAction) -> Unit,
+    onProfileNavigation: (userId: Long) -> Unit,
+    onPostDetailNavigation: (Post) -> Unit
+)  {
 //    val pullRefreshState = rememberPullRefreshState(
 //        refreshing = homeRefreshState.isRefreshing,
 //        onRefresh = { onUiAction(HomeUiAction.RefreshingAction) }
@@ -72,16 +72,16 @@ fun HomeScreen(
 
     SwipeRefresh(
         state = swipeRefreshState,
-        onRefresh = { onUiAction(HomeUiAction.RefreshingAction) },
+        onRefresh = { onUiAction(HomeUiAction.RefreshAction) },
         modifier = modifier.fillMaxSize()
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (onboardingUiState.shouldShowOnboarding) {
+            if (onBoardingUiState.shouldShowOnBoarding) {
                 item {
-                    OnBoardingSelection(
-                        users = onboardingUiState.followableUsers,
+                    OnBoardingSection(
+                        users = onBoardingUiState.followableUsers,
                         onUserClick = { user ->
                             val post = postsFeedUiState.posts.firstOrNull { it.userId == user.id }
                             post?.let { onPostDetailNavigation(it) }
@@ -93,7 +93,7 @@ fun HomeScreen(
                                 )
                             )
                         },
-                        onboardingFinished={onUiAction(HomeUiAction.RemoveOnBoardingAction)}
+                        onBoardingFinish ={onUiAction(HomeUiAction.RemoveOnboardingAction)}
                     )
 
                     Text(
@@ -153,7 +153,7 @@ private fun HomeScreenPreview() {
     SocialAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             HomeScreen(
-                onboardingUiState = OnBoardingUiState(),
+                onBoardingUiState = OnBoardingUiState(),
                 postsFeedUiState = PostsFeedUiState(),
                 homeRefreshState = HomeRefreshState(),
                 onPostDetailNavigation = {},

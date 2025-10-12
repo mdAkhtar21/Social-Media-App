@@ -44,7 +44,7 @@ internal class PostCommentsApiService: KtorApi() {
     suspend fun removeComment(
         commentParams: RemoveCommentParams,
         userToken: String
-    ): CommentApiResponse {
+    ): CommentApiResponse{
         val httpResponse = client.delete {
             endPoint(path = "/post/comments/delete")
             setBody(body = commentParams)

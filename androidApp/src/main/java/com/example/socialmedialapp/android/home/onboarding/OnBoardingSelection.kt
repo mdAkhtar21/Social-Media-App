@@ -1,5 +1,6 @@
 package com.example.socialmedialapp.android.home.onboarding
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,36 +30,35 @@ import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 import com.example.socialmedialapp.common.domain.model.FollowsUser
 
 @Composable
-fun OnBoardingSelection(
-    modifier: Modifier = Modifier,
+fun OnBoardingSection(
     users: List<FollowsUser>,
     onUserClick: (FollowsUser) -> Unit,
     onFollowButtonClick: (Boolean, FollowsUser) -> Unit,
-    onboardingFinished: () -> Unit
+    onBoardingFinish: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(id = R.string.onboarding_title),
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = MediumSpacing),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
-        )
-
-        Text(
-            text = stringResource(id = R.string.onboarding_description),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = LargeSpacing),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(LargeSpacing)) // ✅ fixed
+        Text(
+            text = stringResource(id = R.string.oboarding_guidance_subtitle),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = LargeSpacing),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = modifier.height(LargeSpacing))
 
         UsersRow(
             users = users,
@@ -66,20 +67,20 @@ fun OnBoardingSelection(
         )
 
         OutlinedButton(
-            onClick = onboardingFinished,
-            modifier = Modifier
+            onClick = onBoardingFinish,
+            shape = RoundedCornerShape(percent = 50),
+            modifier = modifier
                 .fillMaxWidth(fraction = 0.5f)
                 .align(Alignment.CenterHorizontally)
-                .padding(vertical = LargeSpacing),
-            shape = RoundedCornerShape(percent = 50)
+                .padding(vertical = LargeSpacing)
         ) {
-            Text(text = stringResource(id = R.string.onboarding_done_button))
+            Text(text = stringResource(id = R.string.onboarding_button_text))
         }
     }
 }
 
 @Composable
-fun UsersRow(
+private fun UsersRow(
     modifier: Modifier = Modifier,
     users: List<FollowsUser>,
     onUserClick: (FollowsUser) -> Unit,
@@ -90,12 +91,9 @@ fun UsersRow(
         contentPadding = PaddingValues(horizontal = LargeSpacing),
         modifier = modifier
     ) {
-        items(
-            items = users,
-            key = { followUser -> followUser.id }
-        ) { followUser ->
+        items(items = users, key = { user -> user.id }) {
             OnBoardingUserItem(
-                followsUser = followUser,
+                followsUser = it,
                 onUserClick = onUserClick,
                 onFollowButtonClick = onFollowButtonClick
             )
@@ -104,15 +102,32 @@ fun UsersRow(
 }
 
 
-@Preview(showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun onBoardingSelectionPreview() {
+private fun OnBoardingSectionPreview() {
     SocialAppTheme {
-        OnBoardingSelection(
-            users = sampleUsers.map { it.toFollowsUser() },
-            onUserClick = {},
-            onFollowButtonClick = {_,_->},
-            onboardingFinished = {}
-        )
+        Surface(color = MaterialTheme.colorScheme.background) {
+            OnBoardingSection(
+                users = sampleUsers.map { it.toFollowsUser() },
+                onUserClick = {},
+                onFollowButtonClick = { _, _ -> },
+                onBoardingFinish = {}
+            )
+        }
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun UsersRowPreview() {
+    SocialAppTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            UsersRow(
+                users = sampleUsers.map { it.toFollowsUser() },
+                onUserClick = {},
+                onFollowButtonClick = { _, _ -> },
+                modifier = Modifier.padding(vertical = LargeSpacing)
+            )
+        }
     }
 }

@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class FollowsParams(
-    val follower: Int,
+    val follower: Long,
     val following:Long
 )
 

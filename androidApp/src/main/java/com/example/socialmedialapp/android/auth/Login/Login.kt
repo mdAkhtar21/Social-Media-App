@@ -3,6 +3,7 @@ package com.example.socialmedialapp.android.auth.Login
 
 import androidx.compose.runtime.Composable
 import com.example.socialmedialapp.android.auth.signUp.SignUp
+import com.example.socialmedialapp.android.destinations.HomeDestination
 import com.example.socialmedialapp.android.destinations.HomeScreenDestination
 import com.example.socialmedialapp.android.destinations.LoginDestination
 import com.example.socialmedialapp.android.destinations.SignUpDestination
@@ -16,23 +17,20 @@ fun Login(
     navigator: DestinationsNavigator
 ) {
     val viewModel: LoginViewModel = koinViewModel()
-
     LoginScreen(
         uiState = viewModel.uiState,
         onEmailChange = viewModel::updateEmail,
         onPasswordChange = viewModel::updatePassword,
         onSignInClick = viewModel::signIn,
         onNavigateToHome = {
-            navigator.navigate(HomeScreenDestination){
-                popUpTo(LoginDestination.route){
-                    inclusive=true
-                }
+            navigator.navigate(HomeDestination){
+                popUpTo(LoginDestination.route){inclusive = true}
             }
         },
-        onNavigateToSignUp = {
-            navigator.navigate(SignUpDestination){
+        onNavigateToSignup = {
+            navigator.navigate(SignUpDestination.route){
                 popUpTo(LoginDestination.route){
-                    inclusive=true
+                    inclusive = true
                 }
             }
         }

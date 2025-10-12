@@ -2,6 +2,7 @@
 package com.example.socialmedialapp.android.auth.signUp
 
 import androidx.compose.runtime.Composable
+import com.example.socialmedialapp.android.destinations.HomeDestination
 import com.example.socialmedialapp.android.destinations.HomeScreenDestination
 import com.example.socialmedialapp.android.destinations.LoginDestination
 import com.example.socialmedialapp.android.destinations.SignUpDestination
@@ -19,22 +20,19 @@ fun SignUp(
     val viewModel: SignUpViewModel = koinViewModel()
     SignUpScreen(
         uiState = viewModel.uiState,
-        onUserNameChange = viewModel::updateUserName,
+        onUsernameChange = viewModel::updateUsername,
         onEmailChange = viewModel::updateEmail,
         onPasswordChange = viewModel::updatePassword,
-
-        onNavigateToHome = {
-            navigator.navigate(HomeScreenDestination){
+        onNavigateToLogin = {
+            navigator.navigate(LoginDestination){
                 popUpTo(SignUpDestination.route){
-                    inclusive=true
+                    inclusive = true
                 }
             }
         },
-        onNavigateToLogin={
-            navigator.navigate(LoginDestination){
-                popUpTo(SignUpDestination.route){
-                    inclusive=true
-                }
+        onNavigateToHome = {
+            navigator.navigate(HomeDestination){
+                popUpTo(SignUpDestination.route){inclusive = true}
             }
         },
         onSignUpClick = viewModel::signUp

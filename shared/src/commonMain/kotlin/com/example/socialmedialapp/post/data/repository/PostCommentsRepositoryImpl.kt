@@ -35,7 +35,7 @@ internal class PostCommentsRepositoryImpl(
                 )
 
                 if (apiResponse.code == HttpStatusCode.OK){
-                     Result.Success(
+                    Result.Success(
                         data = apiResponse.data.comments.map {
                             it.toDomainPostComment(isOwner = it.userId == currentUserData.id)
                         }

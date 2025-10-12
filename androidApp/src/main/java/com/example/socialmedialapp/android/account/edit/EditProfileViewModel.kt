@@ -8,13 +8,15 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.socialmedialapp.account.domain.model.Profile
 import com.example.socialmedialapp.common.util.Result
 import com.example.socialmedialapp.account.domain.usecase.GetProfileUseCase
 import com.example.socialmedialapp.account.domain.usecase.UpdateProfileUseCase
-import com.example.socialmedialapp.android.common.dummy_data.Profile
 import com.example.socialmedialapp.android.common.util.Event
 import com.example.socialmedialapp.android.common.util.EventBus
+import com.example.socialmedialapp.android.common.util.ImageBytesReader
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -22,7 +24,7 @@ class EditProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val imageBytesReader: ImageBytesReader
-): ViewModel() {
+) : ViewModel(){
 
     var uiState: EditProfileUiState by mutableStateOf(EditProfileUiState())
         private set
@@ -30,11 +32,10 @@ class EditProfileViewModel(
     var bioTextFieldValue: TextFieldValue by mutableStateOf(TextFieldValue(text = ""))
         private set
 
-    private fun fetchProfile(userId: Long) {
+    private fun fetchProfile(userId: Long){
         viewModelScope.launch {
-            uiState = uiState.copy(
-                isLoading = true
-            )
+            uiState = uiState.copy(isLoading = true)
+
             delay(1000)
 
             when (val result = getProfileUseCase(profileId = userId).first()) {
@@ -127,14 +128,15 @@ class EditProfileViewModel(
             selection = TextRange(index = inputBio.text.length)
         )
     }
+
     fun onUiAction(uiAction: EditProfileUiAction) {
         when (uiAction) {
             is EditProfileUiAction.FetchProfileAction -> fetchProfile(uiAction.userId)
             is EditProfileUiAction.UploadProfileAction -> readImageBytes(imageUri = uiAction.imageUri)
         }
     }
-}
 
+}
 
 data class EditProfileUiState(
     val isLoading: Boolean = false,

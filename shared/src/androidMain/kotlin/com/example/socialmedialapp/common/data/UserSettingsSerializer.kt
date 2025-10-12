@@ -7,7 +7,8 @@ import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
 
-object UserSettingsSerializer : Serializer<UserSettings> {
+object UserSettingsSerializer: Serializer<UserSettings> {
+
     override val defaultValue: UserSettings
         get() = UserSettings()
 
@@ -17,7 +18,8 @@ object UserSettingsSerializer : Serializer<UserSettings> {
                 deserializer = UserSettings.serializer(),
                 string = input.readBytes().decodeToString()
             )
-        } catch (serializationExc: SerializationException) {
+        }catch (serializationExc: SerializationException){
+            serializationExc.printStackTrace()
             defaultValue
         }
     }

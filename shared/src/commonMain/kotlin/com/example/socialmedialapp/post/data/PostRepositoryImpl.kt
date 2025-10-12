@@ -4,15 +4,18 @@ import androidx.datastore.core.IOException
 import com.example.socialmedialapp.common.data.local.UserPreferences
 import com.example.socialmedialapp.common.data.local.UserSettings
 import com.example.socialmedialapp.common.data.model.LikeParams
+import com.example.socialmedialapp.common.data.model.NewPostParams
 import com.example.socialmedialapp.common.data.model.PostsApiResponse
 import com.example.socialmedialapp.common.data.remote.PostApiService
 import com.example.socialmedialapp.common.domain.model.Post
 import com.example.socialmedialapp.common.util.Constants
 import com.example.socialmedialapp.common.util.DispatcherProvider
 import com.example.socialmedialapp.common.util.Result
+import com.example.socialmedialapp.common.util.safeApiCall
 import com.example.socialmedialapp.post.domain.repository.PostRepository
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 
 internal class PostRepositoryImpl(

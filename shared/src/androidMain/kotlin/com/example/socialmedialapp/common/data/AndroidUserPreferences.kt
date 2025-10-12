@@ -5,9 +5,9 @@ import com.example.socialmedialapp.common.data.local.UserPreferences
 import com.example.socialmedialapp.common.data.local.UserSettings
 import kotlinx.coroutines.flow.first
 
-internal class AndroidUserPreferences (
+internal class AndroidUserPreferences(
     private val dataStore: DataStore<UserSettings>
-):UserPreferences{
+): UserPreferences{
     override suspend fun getUserData(): UserSettings {
         return dataStore.data.first()
     }

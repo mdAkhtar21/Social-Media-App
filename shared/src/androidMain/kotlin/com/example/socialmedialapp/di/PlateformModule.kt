@@ -9,9 +9,10 @@ import com.example.socialmedialapp.common.data.local.UserPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-actual val platformModule= module {
+actual val platformModule = module {
     single<UserPreferences> { AndroidUserPreferences(get()) }
-    single{
+
+    single {
         DataStoreFactory.create(
             serializer = UserSettingsSerializer,
             produceFile = {

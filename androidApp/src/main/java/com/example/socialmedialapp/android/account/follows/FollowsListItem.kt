@@ -19,18 +19,20 @@ import androidx.compose.ui.unit.dp
 import com.example.socialmedialapp.android.common.components.CircleImage
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
+import com.example.socialmedialapp.android.common.util.toCurrentUrl
 
 @Composable
 fun FollowsListItem(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     name: String,
-    bio:String,
-    imageUrl:String,
-    onItemClick:()->Unit
-){
+    bio: String,
+    imageUrl: String?,
+    onItemClick:() -> Unit
+) {
+
 
     Row (
-        modifier=modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onItemClick() }
             .padding(
@@ -41,17 +43,20 @@ fun FollowsListItem(
         verticalAlignment = Alignment.CenterVertically
     ){
 
-        CircleImage(modifier=modifier.size(40.dp),imageUrl=imageUrl, onClick = {})
+        CircleImage(modifier = modifier.size(40.dp), url = imageUrl?.toCurrentUrl(), onClick = {})
 
         Column {
+
             Text(
-                text=name,
+                text = name,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+
             Text(
-                text=bio, style = MaterialTheme.typography.bodySmall,
+                text = bio,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

@@ -4,7 +4,6 @@ import com.example.socialmedialapp.account.domain.model.Profile
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 internal data class RemoteProfile(
     val id: Long,
@@ -29,7 +28,6 @@ internal data class RemoteProfile(
         )
     }
 }
-
 
 @Serializable
 data class UpdateUserParams(

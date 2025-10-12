@@ -1,5 +1,6 @@
 package com.example.socialmedialapp.android.common.components
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape
@@ -15,21 +16,22 @@ import io.ktor.http.Url
 
 @Composable
 fun CircleImage(
-    modifier: Modifier=Modifier,
-    imageUrl:String?,
-    onClick:()->Unit
+    modifier: Modifier,
+    url: String?,
+    uri: Uri? = null,
+    onClick: () -> Unit
 ) {
-    val isLight = !isSystemInDarkTheme()
     AsyncImage(
-        model = imageUrl,
+        model = uri ?: url,
         contentDescription = null,
-        modifier = modifier.clip(CircleShape)
+        modifier = modifier
+            .clip(CircleShape)
             .clickable { onClick() },
-        placeholder = if(isLight){
-            painterResource(id= R.drawable.light_image_place_holder)
-        }else{
+        placeholder = if (isSystemInDarkTheme()) {
+            painterResource(id = R.drawable.light_image_place_holder)
+        } else {
             painterResource(id = R.drawable.dark_image_place_holder)
         },
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
     )
 }

@@ -47,28 +47,36 @@ import androidx.compose.ui.unit.dp
 import com.example.socialmedialapp.android.R
 import com.example.socialmedialapp.android.common.components.CircleImage
 import com.example.socialmedialapp.android.common.components.CustomTextField
+import com.example.socialmedialapp.android.common.components.ScreenLevelLoadingErrorView
+import com.example.socialmedialapp.android.common.components.ScreenLevelLoadingView
 import com.example.socialmedialapp.android.common.theming.ButtonHeight
 import com.example.socialmedialapp.android.common.theming.ExtraLargeSpacing
+import com.example.socialmedialapp.android.common.theming.Gray
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.SmallElevation
+import com.example.socialmedialapp.android.common.util.toCurrentUrl
 
 @Composable
 fun EditProfileScreen(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     editProfileUiState: EditProfileUiState,
-    onNameChange:(String)->Unit,
-    bioTextFieldValue: TextFieldValue,    onBioChange: (TextFieldValue) -> Unit,
+    onNameChange: (String) -> Unit,
+    bioTextFieldValue: TextFieldValue,
+    onBioChange: (TextFieldValue) -> Unit,
     onUploadSucceed: () -> Unit,
     userId: Long,
     onUiAction: (EditProfileUiAction) -> Unit
-){
-    val context= LocalContext.current
+) {
+
+    val context = LocalContext.current
     var selectedImage by remember { mutableStateOf<Uri?>(null) }
     val pickImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri -> selectedImage = uri }
     )
-    Box(modifier=modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
         if (editProfileUiState.profile != null){
             Column(
                 modifier = modifier
@@ -88,7 +96,7 @@ fun EditProfileScreen(
                 Box {
                     CircleImage(
                         modifier = modifier.size(120.dp),
-                        imageUrl = editProfileUiState.profile.imageUrl?.toCurrentUrl(),
+                        url = editProfileUiState.profile.imageUrl?.toCurrentUrl(),
                         uri = selectedImage,
                         onClick = {}
                     )
@@ -143,9 +151,7 @@ fun EditProfileScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .height(ButtonHeight),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 0.dp
-                    ),
+                    elevation = ButtonDefaults.elevatedButtonElevation(0.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(text = stringResource(id = R.string.upload_changes_text))
@@ -192,16 +198,16 @@ fun EditProfileScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BioTextField(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     value: TextFieldValue,
-    onValueChange:(TextFieldValue)->Unit
-){
+    onValueChange: (TextFieldValue) -> Unit
+) {
     TextField(
         modifier = modifier
             .fillMaxWidth()
             .height(90.dp),
-        value=value,
-        onValueChange={
+        value = value,
+        onValueChange = {
             onValueChange(
                 TextFieldValue(
                     text = it.text,
@@ -209,28 +215,22 @@ fun BioTextField(
                 )
             )
         },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = if (isSystemInDarkTheme()) {
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor  = if (isSystemInDarkTheme()) {
                 MaterialTheme.colorScheme.surface
             } else {
-                MaterialTheme.colorScheme.surfaceVariant
+                Gray
             },
-            unfocusedContainerColor = if (isSystemInDarkTheme()) {
-                MaterialTheme.colorScheme.surface
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            },
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
         ),
         textStyle = MaterialTheme.typography.bodyMedium,
         placeholder = {
             Text(
-                text= stringResource(id = R.string.user_bio_hint),
-                style = MaterialTheme.typography.bodyMedium
+                text = stringResource(id = R.string.user_bio_hint),
+                style = MaterialTheme.typography.labelMedium
             )
         },
         shape = MaterialTheme.shapes.medium
-
     )
 }

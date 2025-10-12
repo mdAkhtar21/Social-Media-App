@@ -1,11 +1,11 @@
 package com.example.socialmedialapp.auth.domain.model
 
 data class AuthResultData(
-    val id:Int,
+    val id: Long,
     val name: String,
-    val avatar:String?=null,
     val bio: String,
-    val token:String,
-    val followerCount:Int=0,
-    val followingCount:Int=0
+    val avatar: String? = null,
+    val token: String,
+    val followersCount: Int = 0,
+    val followingCount: Int = 0
 )

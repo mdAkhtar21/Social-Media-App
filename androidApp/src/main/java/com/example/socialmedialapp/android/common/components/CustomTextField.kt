@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,19 +24,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 import com.example.socialmedialapp.android.R
+import com.example.socialmedialapp.android.common.theming.Gray
+import com.example.socialmedialapp.android.common.theming.SocialAppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
-    isPasswordTextfield: Boolean = false,
+    isPasswordTextField: Boolean = false,
     isSingleLine: Boolean = true,
     @StringRes hint: Int
 ) {
+
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
@@ -49,43 +53,39 @@ fun CustomTextField(
             keyboardType = keyboardType
         ),
         singleLine = isSingleLine,
-        placeholder = {
-            Text(text = stringResource(id = hint), style = MaterialTheme.typography.bodyMedium)
-        },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = if (isSystemInDarkTheme()) {
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = if (isSystemInDarkTheme()){
                 MaterialTheme.colorScheme.surface
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
+            }else{
+                Gray
             },
-            unfocusedContainerColor = if (isSystemInDarkTheme()) {
-                MaterialTheme.colorScheme.surface
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            },
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
         ),
-        trailingIcon = if (isPasswordTextfield) {
+        trailingIcon = if (isPasswordTextField){
             {
                 PasswordEyeIcon(isPasswordVisible = isPasswordVisible) {
                     isPasswordVisible = !isPasswordVisible
                 }
             }
-        } else {
+        }else{
             null
         },
-        visualTransformation = if (isPasswordTextfield) {
-            if (isPasswordVisible) {
+        visualTransformation = if (isPasswordTextField){
+            if (isPasswordVisible){
                 VisualTransformation.None
-            } else {
+            }else{
                 PasswordVisualTransformation()
             }
-        } else {
+        }else{
             VisualTransformation.None
+        },
+        placeholder = {
+            Text(text = stringResource(id = hint), style = MaterialTheme.typography.bodyMedium)
         },
         shape = MaterialTheme.shapes.medium
     )
+
 }
 
 @Composable
@@ -93,25 +93,27 @@ fun PasswordEyeIcon(
     isPasswordVisible: Boolean,
     onPasswordVisibilityToggle: () -> Unit
 ) {
-    val image = if (isPasswordVisible) {
+
+    val image = if (isPasswordVisible){
         painterResource(id = R.drawable.show_eye_icon_filled)
-    } else {
+    }else{
         painterResource(id = R.drawable.hide_eye_icon_filled)
     }
+
     IconButton(onClick = onPasswordVisibilityToggle) {
         Icon(painter = image, contentDescription = null)
     }
+
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview
 @Composable
-private fun CustomTextFieldPreview() {
+fun CustomTextFieldPreview() {
     SocialAppTheme {
         CustomTextField(
             value = "",
             onValueChange = {},
-            hint = R.string.default_error_message,
-            isPasswordTextfield = true
+            hint = androidx.compose.ui.R.string.default_error_message
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.example.socialmedialapp.android.common.dummy_data
 
 import com.example.socialmedialapp.android.common.fake_data.samplePosts
+import com.example.socialmedialapp.post.domain.model.PostComment
 
 
 data class Comment(
@@ -11,7 +12,20 @@ data class Comment(
     val authorImageUrl: String,
     val authorId: Int,
     val postId: Long
-)
+){
+    fun toDomainComment(): PostComment {
+        return PostComment(
+            commentId = id.hashCode().toLong(),
+            content = comment,
+            createdAt = date,
+            postId = postId,
+            userId = authorId.toLong(),
+            userName = authorName,
+            userImageUrl = authorImageUrl
+        )
+    }
+}
+
 val sampleComments = listOf(
     Comment(
         id = "comment1",

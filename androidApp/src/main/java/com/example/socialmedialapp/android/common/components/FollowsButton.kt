@@ -1,7 +1,6 @@
 package com.example.socialmedialapp.android.common.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,19 +21,17 @@ fun FollowsButton(
     Button(
         onClick = onClick,
         modifier = modifier,
-        colors = if (isOutline) {
+        colors = if (isOutline){
             ButtonDefaults.outlinedButtonColors()
-        } else {
+        }else{
             ButtonDefaults.buttonColors()
         },
-        border = if (isOutline) {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
-        } else {
+        border = if (isOutline){
+            ButtonDefaults.outlinedButtonBorder
+        }else{
             null
         },
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = 0.dp
-        )
+        elevation = ButtonDefaults.elevatedButtonElevation(0.dp)
     ) {
         Text(
             text = stringResource(id = text),

@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.socialmedialapp.account.domain.model.Profile
 import com.example.socialmedialapp.account.domain.usecase.GetProfileUseCase
-import com.example.socialmedialapp.android.common.fake_data.Post
 import com.example.socialmedialapp.android.common.util.Constants
 import com.example.socialmedialapp.android.common.util.DefaultPagingManager
 import com.example.socialmedialapp.android.common.util.Event
 import com.example.socialmedialapp.android.common.util.EventBus
 import com.example.socialmedialapp.android.common.util.PagingManager
+import com.example.socialmedialapp.common.domain.model.Post
 import com.example.socialmedialapp.common.util.Result
 import com.example.socialmedialapp.follows.domain.usecase.FollowOrUnfollowUseCase
 import com.example.socialmedialapp.post.domain.usecase.GetUserPostsUseCase
@@ -27,11 +27,14 @@ class ProfileViewModel(
     private val followOrUnfollowUseCase: FollowOrUnfollowUseCase,
     private val getUserPostsUseCase: GetUserPostsUseCase,
     private val likePostUseCase: LikeOrDislikePostUseCase
-) : ViewModel() {
+) : ViewModel(){
+
     var userInfoUiState by mutableStateOf(UserInfoUiState())
         private set
+
     var profilePostsUiState by mutableStateOf(ProfilePostsUiState())
         private set
+
     private lateinit var pagingManager: PagingManager<Post>
 
     init {
@@ -44,28 +47,30 @@ class ProfileViewModel(
         }.launchIn(viewModelScope)
     }
 
-    private fun fetchProfile(userId: Long) {
+
+    private fun fetchProfile(userId: Long){
         viewModelScope.launch {
             getProfileUseCase(profileId = userId)
                 .onEach {
-                    when (it) {
+                    when(it){
                         is Result.Error -> {
                             userInfoUiState = userInfoUiState.copy(
                                 isLoading = false,
                                 errorMessage = it.message
                             )
                         }
-
                         is Result.Success -> {
                             userInfoUiState = userInfoUiState.copy(
                                 isLoading = false,
                                 profile = it.data
                             )
+                            fetchProfilePosts(profileId = userId)
                         }
                     }
                 }.collect()
         }
     }
+
     private suspend fun fetchProfilePosts(profileId: Long) {
         if (profilePostsUiState.isLoading || profilePostsUiState.posts.isNotEmpty()) return
 
@@ -113,7 +118,7 @@ class ProfileViewModel(
         viewModelScope.launch { pagingManager.loadItems() }
     }
 
-    private fun followUser(profile: Profile) {
+    private fun followUser(profile: Profile){
         viewModelScope.launch {
             val count = if (profile.isFollowing) -1 else +1
             userInfoUiState = userInfoUiState.copy(
@@ -128,7 +133,7 @@ class ProfileViewModel(
                 shouldFollow = !profile.isFollowing
             )
 
-            when (result) {
+            when(result){
                 is Result.Error -> {
                     userInfoUiState = userInfoUiState.copy(
                         profile = userInfoUiState.profile?.copy(
@@ -137,11 +142,11 @@ class ProfileViewModel(
                         )
                     )
                 }
-
                 is Result.Success -> Unit
             }
         }
     }
+
     private fun likeOrDislikePost(post: Post) {
         viewModelScope.launch {
             val count = if (post.isLiked) -1 else +1

@@ -9,6 +9,7 @@ import com.example.socialmedialapp.common.util.Constants
 import com.example.socialmedialapp.common.util.DispatcherProvider
 import com.example.socialmedialapp.follows.domain.FollowsRepository
 import com.example.socialmedialapp.common.util.Result
+import com.example.socialmedialapp.common.util.safeApiCall
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.withContext
 
@@ -16,8 +17,8 @@ internal class FollowsRepositoryImpl(
     private val followsApiService: FollowsApiService,
     private val userPreferences: UserPreferences,
     private val dispatcher: DispatcherProvider
-): FollowsRepository {
-    override suspend fun getFollowableUsers():Result<List<FollowsUser>> {
+): FollowsRepository{
+    override suspend fun getFollowableUsers(): Result<List<FollowsUser>> {
         return withContext(dispatcher.io) {
             try {
                 val userData = userPreferences.getUserData()
@@ -40,20 +41,20 @@ internal class FollowsRepositoryImpl(
                         Result.Error(message = "${apiResponse.data.message}")
                     }
                 }
-            } catch (ioException: IOException) {
+            }catch (ioException: IOException) {
                 Result.Error(message = Constants.NO_INTERNET_ERROR)
             }
         }
     }
 
     override suspend fun followOrUnfollow(
-        FollowsUserId: Long,
+        followedUserId: Long,
         shouldFollow: Boolean
     ): Result<Boolean> {
         return withContext(dispatcher.io) {
             try {
                 val userData = userPreferences.getUserData()
-                val followParams = FollowsParams(userData.id, FollowsUserId)
+                val followParams = FollowsParams(userData.id, followedUserId)
 
                 val apiResponse = if (shouldFollow) {
                     followsApiService.followUser(userData.token, followParams)
@@ -72,6 +73,31 @@ internal class FollowsRepositoryImpl(
                 Result.Error(
                     message = "${exception.message}"
                 )
+            }
+        }
+    }
+
+    override suspend fun getFollows(
+        userId: Long,
+        page: Int,
+        pageSize: Int,
+        followsType: Int
+    ): Result<List<FollowsUser>> {
+        return safeApiCall(dispatcher){
+            val currentUserData = userPreferences.getUserData()
+            val apiResponse = followsApiService.getFollows(
+                userToken = currentUserData.token,
+                userId = userId,
+                page = page,
+                pageSize = pageSize,
+                followsEndPoint = if (followsType == 1) "followers" else "following"
+            )
+
+
+            if (apiResponse.code == HttpStatusCode.OK){
+                Result.Success(data = apiResponse.data.follows.map { it.toDomainFollowUser() })
+            }else{
+                Result.Error(message = "${apiResponse.data.message}")
             }
         }
     }

@@ -11,27 +11,33 @@ import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
+private val BASE_URL = "http://192.168.31.194:8000/"
 internal abstract class KtorApi {
-    val BASE_URL = "http://192.168.31.194:8000/"
-    val client= HttpClient {
-        install(ContentNegotiation) {
+
+    val client = HttpClient {
+        install(ContentNegotiation){
             json(Json {
                 ignoreUnknownKeys = true
                 useAlternativeNames = false
             })
         }
     }
+
     fun HttpRequestBuilder.endPoint(path: String){
-        url{
+        url {
             takeFrom(BASE_URL)
             path(path)
             contentType(ContentType.Application.Json)
         }
     }
 
-    fun HttpRequestBuilder.setToken(token:String){
-        headers{
-            append(name = "Authorization", value = "Bearer ${token}")
+    fun HttpRequestBuilder.setToken(token: String) {
+        headers {
+            append(name = "Authorization", value = "Bearer $token")
         }
+    }
+
+    fun HttpRequestBuilder.setupMultipartRequest(){
+        contentType(ContentType.MultiPart.FormData)
     }
 }

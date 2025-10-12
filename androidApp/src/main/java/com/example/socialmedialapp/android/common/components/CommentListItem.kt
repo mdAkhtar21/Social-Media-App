@@ -15,87 +15,167 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.socialmedialapp.android.R
+import com.example.socialmedialapp.android.common.dummy_data.sampleComments
 import com.example.socialmedialapp.android.common.theming.DarkGray
 import com.example.socialmedialapp.android.common.theming.LargeSpacing
 import com.example.socialmedialapp.android.common.theming.LightGray
 import com.example.socialmedialapp.android.common.theming.MediumSpacing
 import com.example.socialmedialapp.android.common.theming.SocialAppTheme
-import com.example.socialmedialapp.android.common.dummy_data.Comment
-import com.example.socialmedialapp.android.common.dummy_data.sampleComments
+import com.example.socialmedialapp.android.common.util.toCurrentUrl
+import com.example.socialmedialapp.post.domain.model.PostComment
 
 @Composable
 fun CommentListItem(
-    modifier: Modifier=Modifier,
-    comment: Comment,
-    onProfileClick:(Int)->Unit,
-    onMoreIconClick:()->Unit
+    modifier: Modifier = Modifier,
+    comment: PostComment,
+    onProfileClick: (Long) -> Unit,
+    onMoreIconClick: (PostComment) -> Unit
 ) {
-    Row (
-        modifier=modifier
+    Row(
+        modifier = modifier
             .fillMaxWidth()
-            .padding(LargeSpacing),
+            .clickable {  }
+            .padding(all = LargeSpacing),
         horizontalArrangement = Arrangement.spacedBy(MediumSpacing)
-    ){
+    ) {
         CircleImage(
-            imageUrl = comment.authorImageUrl,
-            modifier = modifier.size(30.dp)
-        ) {
-            onProfileClick(comment.authorId)
-        }
+            modifier = modifier.size(30.dp),
+            url = comment.userImageUrl?.toCurrentUrl(),
+            onClick = { onProfileClick(comment.userId) }
+        )
+
         Column(
-            modifier = modifier.weight(1f)
+            modifier = modifier
+                .weight(1f)
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(MediumSpacing)
-            ) {
-                Text(text = comment.authorName, style = MaterialTheme.typography.labelLarge,
-                    modifier = modifier
-                        .alignByBaseline()
+                horizontalArrangement = Arrangement.spacedBy(
+                    MediumSpacing
                 )
-                Text(text = comment.date, style = MaterialTheme.typography.labelSmall,
-                    color = if(isSystemInDarkTheme()){
+            ) {
+                Text(
+                    text = comment.userName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier.alignByBaseline()
+                )
+
+                Text(
+                    text = comment.createdAt,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                    color = if (isSystemInDarkTheme()) {
                         LightGray
-                    }else{
+                    } else {
                         DarkGray
                     },
-                    modifier = modifier
-                        .alignByBaseline()
-                        .weight(1f)
+                    modifier = modifier.alignByBaseline().weight(1f)
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.round_more_horiz_24),
+                    painter = painterResource(id = R.drawable.round_more_horizontal),
                     contentDescription = null,
-                    tint = if(isSystemInDarkTheme()){
+                    tint = if (isSystemInDarkTheme()) {
                         LightGray
-                    }else{
+                    } else {
                         DarkGray
                     },
-                    modifier = modifier.clickable { onMoreIconClick() }
+                    modifier = modifier.clickable { onMoreIconClick(comment) }
                 )
             }
 
-            Text(text = comment.comment,
-                style = MaterialTheme.typography.labelMedium)
+            Text(
+                text = comment.content,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
 
-
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun CommentListItemPreview() {
+fun CommentListItemPreview() {
     SocialAppTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
             CommentListItem(
-                comment = sampleComments.first(),
+                comment = sampleComments.first().toDomainComment(),
                 onProfileClick = {},
                 onMoreIconClick = {}
             )
         }
     }
+}
 
+
+@Composable
+fun CommentItemLayout(
+    modifier: Modifier,
+    image: @Composable () -> Unit,
+    username: @Composable () -> Unit,
+    date: @Composable () -> Unit,
+    moreIcon: @Composable () -> Unit,
+    commentText: @Composable () -> Unit
+) {
+    Layout(
+        contents = listOf(
+            image,
+            username,
+            date,
+            moreIcon,
+            commentText
+        ),
+        modifier = modifier
+            .padding(
+                top = LargeSpacing,
+                bottom = LargeSpacing,
+                start = LargeSpacing,
+                end = MediumSpacing
+            )
+    ) { (imageMeasurables,
+            usernameMeasurables,
+            dateMeasurables,
+            moreIconMeasurables,
+            commentTextMeasurables),
+        constraints ->
+
+        val imagePlaceable = imageMeasurables.first().measure(constraints)
+        val usernamePlaceable = usernameMeasurables.first().measure(constraints)
+        val datePlaceable = dateMeasurables.first().measure(constraints)
+        val moreIconPlaceable = moreIconMeasurables.first().measure(constraints)
+
+        val commentTextConstraints = constraints.copy(
+            maxWidth = constraints.maxWidth - (24.dp.roundToPx() + imagePlaceable.width)
+        )
+        val commentTextPlaceable = commentTextMeasurables.first().measure(commentTextConstraints)
+
+        val totalHeight = maxOf(
+            imagePlaceable.height,
+            (usernamePlaceable.height + commentTextPlaceable.height)
+        )
+
+        layout(width = constraints.maxWidth, height = totalHeight) {
+            imagePlaceable.placeRelative(x = 0, y = 0)
+            usernamePlaceable.placeRelative(
+                x = imagePlaceable.width + (8.dp.roundToPx()),
+                y = 0
+            )
+            datePlaceable.placeRelative(
+                x = imagePlaceable.width + usernamePlaceable.width + (16.dp.roundToPx()),
+                y = 3.dp.roundToPx()
+            )
+
+            moreIconPlaceable.placeRelative(
+                x = (constraints.maxWidth) - (moreIconPlaceable.width),
+                y = 0
+            )
+
+            commentTextPlaceable.place(
+                x = imagePlaceable.width + (8.dp.roundToPx()),
+                y = usernamePlaceable.height + (2.dp.roundToPx())
+            )
+        }
+    }
 }
